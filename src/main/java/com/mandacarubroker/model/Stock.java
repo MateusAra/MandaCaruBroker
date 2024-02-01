@@ -1,5 +1,6 @@
-package com.mandacarubroker.domain.stock;
+package com.mandacarubroker.model;
 
+import com.mandacarubroker.dto.StockDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +22,10 @@ public class Stock {
     private String companyName;
     private double price;
 
-    public Stock(RequestStockDTO requestStockDTO){
-        this.symbol = requestStockDTO.symbol();
-        this.companyName = requestStockDTO.companyName();
-        this.price = changePrice(requestStockDTO.price(), true);
+    public Stock(StockDTO stockDTO){
+        this.symbol = stockDTO.symbol();
+        this.companyName = stockDTO.companyName();
+        this.price = changePrice(stockDTO.price(), true);
     }
 
     public double changePrice(double amount, boolean increase) {

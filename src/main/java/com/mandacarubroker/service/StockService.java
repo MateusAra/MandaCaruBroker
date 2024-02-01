@@ -1,8 +1,8 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
-import com.mandacarubroker.domain.stock.Stock;
-import com.mandacarubroker.domain.stock.StockRepository;
+import com.mandacarubroker.dto.StockDTO;
+import com.mandacarubroker.model.Stock;
+import com.mandacarubroker.repository.IStockRepository;
 import jakarta.validation.*;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,9 @@ import java.util.Set;
 public class StockService {
 
 
-    private final StockRepository stockRepository;
+    private final IStockRepository stockRepository;
 
-    public StockService(StockRepository stockRepository) {
+    public StockService(IStockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 
@@ -26,12 +26,6 @@ public class StockService {
 
     public Optional<Stock> getStockById(String id) {
         return stockRepository.findById(id);
-    }
-
-    public Stock createStock(RequestStockDTO data) {
-        Stock novaAcao = new Stock(data);
-        validateRequestStockDTO(data);
-        return stockRepository.save(novaAcao);
     }
 
     public Optional<Stock> updateStock(String id, Stock updatedStock) {
@@ -50,15 +44,15 @@ public class StockService {
         stockRepository.deleteById(id);
     }
 
-    public static void validateRequestStockDTO(RequestStockDTO data) {
+    public static void validateRequestStockDTO(StockDTO data) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(data);
+        Set<ConstraintViolation<StockDTO>> violations = validator.validate(data);
 
         if (!violations.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
 
-            for (ConstraintViolation<RequestStockDTO> violation : violations) {
+            for (ConstraintViolation<StockDTO> violation : violations) {
                 errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
             }
 
@@ -68,10 +62,10 @@ public class StockService {
         }
     }
 
-    public void validateAndCreateStock(RequestStockDTO data) {
+    public Stock validateAndCreateStock(StockDTO data) {
         validateRequestStockDTO(data);
+        Stock newStock = new Stock(data);
 
-        Stock novaAcao = new Stock(data);
-        stockRepository.save(novaAcao);
+        return stockRepository.save(newStock);
     }
 }

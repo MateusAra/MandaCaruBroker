@@ -1,11 +1,11 @@
 package com.mandacarubroker.controller;
 
 
-import com.mandacarubroker.domain.stock.*;
+import com.mandacarubroker.dto.StockDTO;
+import com.mandacarubroker.model.Stock;
 import com.mandacarubroker.service.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -30,8 +30,8 @@ public class StockController {
     }
 
     @PostMapping
-    public ResponseEntity<Stock> createStock(@RequestBody RequestStockDTO data) {
-        Stock createdStock = stockService.createStock(data);
+    public ResponseEntity<Stock> createStock(@RequestBody StockDTO data) {
+        Stock createdStock = stockService.validateAndCreateStock(data);
         return ResponseEntity.ok(createdStock);
     }
 
