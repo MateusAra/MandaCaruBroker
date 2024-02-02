@@ -3,6 +3,7 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.dto.StockDTO;
 import com.mandacarubroker.model.Stock;
 import com.mandacarubroker.repository.IStockRepository;
+import com.mandacarubroker.validator.StockValidator;
 import jakarta.validation.*;
 import org.springframework.stereotype.Service;
 
@@ -44,26 +45,7 @@ public class StockService {
         stockRepository.deleteById(id);
     }
 
-    public static void validateRequestStockDTO(StockDTO data) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<StockDTO>> violations = validator.validate(data);
-
-        if (!violations.isEmpty()) {
-            StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
-
-            for (ConstraintViolation<StockDTO> violation : violations) {
-                errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
-            }
-
-            errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
-
-            throw new ConstraintViolationException(errorMessage.toString(), violations);
-        }
-    }
-
-    public Stock validateAndCreateStock(StockDTO data) {
-        validateRequestStockDTO(data);
+    public Stock createStock(StockDTO data) {
         Stock newStock = new Stock(data);
 
         return stockRepository.save(newStock);
