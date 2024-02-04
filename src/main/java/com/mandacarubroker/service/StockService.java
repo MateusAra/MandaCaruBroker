@@ -3,13 +3,11 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.dto.StockDTO;
 import com.mandacarubroker.model.Stock;
 import com.mandacarubroker.repository.IStockRepository;
-import com.mandacarubroker.validator.StockValidator;
-import jakarta.validation.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class StockService {
@@ -29,20 +27,24 @@ public class StockService {
         return stockRepository.findById(id);
     }
 
-    public Optional<Stock> updateStock(String id, Stock updatedStock) {
-        return stockRepository.findById(id)
-                .map(stock -> {
-                    stock.setSymbol(updatedStock.getSymbol());
-                    stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
-                    stock.setPrice(newPrice);
+    public Stock updateStock(Stock stock, StockDTO updatedStock) {
+        stock.setSymbol(updatedStock.symbol());
+        stock.setCompanyName(updatedStock.companyName());
+        stock.setPrice(updatedStock.price());
 
-                    return stockRepository.save(stock);
-                });
+        stockRepository.save(stock);
+
+        return stock;
     }
 
-    public void deleteStock(String id) {
+    public boolean deleteStock(String id) {
+        Stock stock =  getStockById(id).orElse(null);
+
+        if (stock ==null)
+            return false;
+
         stockRepository.deleteById(id);
+        return true;
     }
 
     public Stock createStock(StockDTO data) {

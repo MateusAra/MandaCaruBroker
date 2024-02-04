@@ -1,4 +1,4 @@
-package com.mandacarubroker.model;
+package com.mandacarubroker.responses;
 
 public class DeleteStockResponse {
     public String message;

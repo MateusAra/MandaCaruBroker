@@ -1,4 +1,6 @@
-package com.mandacarubroker.model;
+package com.mandacarubroker.responses;
+
+import com.mandacarubroker.model.Stock;
 
 import java.util.List;
 
