@@ -144,8 +144,8 @@ Response:
 - Body:
 ````JSON
 {
-      "price": "o preço não pode ser zero ou menor que zero."
-  }
+  "price": "o preço não pode ser zero ou menor que zero."
+}
 ````
 ### Atualizar uma Ação por ID
 Atualiza os detalhes de uma ação específica com base no ID.
