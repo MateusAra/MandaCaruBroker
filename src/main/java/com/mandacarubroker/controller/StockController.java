@@ -96,7 +96,6 @@ public class StockController {
     public ResponseEntity deleteStock(@PathVariable String id) {
 
         boolean deletedStock = stockService.deleteStock(id);
-        String message = deletedStock ? messages.stockDeleted: messages.stockNoExists + id;
         DeleteStockResponse response = new DeleteStockResponse(deletedStock ? messages.stockDeleted: messages.stockNoExists + id);
 
         if (deletedStock){
