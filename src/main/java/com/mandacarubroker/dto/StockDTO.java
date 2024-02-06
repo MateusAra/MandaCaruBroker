@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record StockDTO(
         @Pattern(regexp = "[A-Za-z]{2}[0-9]{1}", message = "o Simbolo deve ter 2 letras seguidas de 1 número.(Ex.:Bs3).")
+        @NotBlank(message = "o Simbolo deve ter 2 letras seguidas de 1 número.(Ex.:Bs3).")
         String symbol,
         @NotBlank(message = "O nome da empresa não pode ficar em branco.")
         String companyName,

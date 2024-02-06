@@ -26,7 +26,6 @@ import java.util.Map;
 public class StockController {
 
     private final StockService stockService;
-    StockMessages messages = new StockMessages();
     public StockController(StockService stockService) {
         this.stockService = stockService;
     }
@@ -37,14 +36,14 @@ public class StockController {
 
         if(!stocks.isEmpty())
         {
-            GetAllStocksResponse response = new GetAllStocksResponse(stocks.size(), messages.success, stocks);
+            GetAllStocksResponse response = new GetAllStocksResponse(stocks.size(), StockMessages.success, stocks);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(response);
         }
 
         GetAllStocksResponse response = new GetAllStocksResponse();
-        response.setMessage(messages.noHaveStocks);
+        response.setMessage(StockMessages.noHaveStocks);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -56,13 +55,13 @@ public class StockController {
         Stock stock = stockService.getStockById(id).orElse(null);
 
         if (stock != null){
-            response.setMessage(messages.success);
+            response.setMessage(StockMessages.success);
             response.setStock(stock);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(response);
         }
-        response.setMessage(messages.stockNoExists + id);
+        response.setMessage(StockMessages.stockNoExists + id);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -81,12 +80,12 @@ public class StockController {
         Stock stock = stockService.getStockById(id).orElse(null);
 
         if (stock != null){
-            response.setMessage(messages.success);
+            response.setMessage(StockMessages.success);
             response.setStock(stockService.updateStock(stock, updatedStock));
             return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(response);
         }
-        response.setMessage(messages.stockNoExists + id);
+        response.setMessage(StockMessages.stockNoExists + id);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -96,7 +95,7 @@ public class StockController {
     public ResponseEntity deleteStock(@PathVariable String id) {
 
         boolean deletedStock = stockService.deleteStock(id);
-        DeleteStockResponse response = new DeleteStockResponse(deletedStock ? messages.stockDeleted: messages.stockNoExists + id);
+        DeleteStockResponse response = new DeleteStockResponse(deletedStock ? StockMessages.stockDeleted: StockMessages.stockNoExists + id);
 
         if (deletedStock){
             return ResponseEntity.status(HttpStatus.OK)

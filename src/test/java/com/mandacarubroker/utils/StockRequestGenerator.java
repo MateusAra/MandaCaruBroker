@@ -12,4 +12,12 @@ public class StockRequestGenerator {
 
         return new StockDTO(symbol, companyName, price);
     }
+
+    public static StockDTO RequestUpdateStock(){
+        String companyName = String.format("Stock.Integration.Test-%s", UUID.randomUUID());
+        double price = 10;
+        String symbol = "Cc2";
+
+        return new StockDTO(symbol, companyName, price);
+    }
 }
