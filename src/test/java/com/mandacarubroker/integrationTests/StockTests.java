@@ -97,6 +97,7 @@ public class StockTests {
                 .then()
                     .statusCode(HttpStatus.SC_ACCEPTED)
                     .body("message", is(StockMessages.success))
+                    .body("stock.id", is(stockId))
                     .body("stock.symbol", is(updateStock.symbol()))
                     .body("stock.companyName", is(updateStock.companyName()))
                     .body("stock.price", notNullValue());
