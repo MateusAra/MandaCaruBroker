@@ -3,6 +3,7 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.dto.StockDTO;
 import com.mandacarubroker.model.Stock;
 import com.mandacarubroker.repository.IStockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +13,8 @@ import java.util.Optional;
 @Service
 public class StockService {
 
-
-    private final IStockRepository stockRepository;
-
-    public StockService(IStockRepository stockRepository) {
-        this.stockRepository = stockRepository;
-    }
+    @Autowired
+    private IStockRepository stockRepository;
 
     public List<Stock> getAllStocks() {
         return stockRepository.findAll();
@@ -40,7 +37,7 @@ public class StockService {
     public boolean deleteStock(String id) {
         Stock stock =  getStockById(id).orElse(null);
 
-        if (stock ==null)
+        if (stock == null)
             return false;
 
         stockRepository.deleteById(id);

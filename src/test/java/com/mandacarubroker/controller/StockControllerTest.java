@@ -1,4 +1,4 @@
-package com.mandacarubroker.integrationTests;
+package com.mandacarubroker.controller;
 
 import com.mandacarubroker.dto.StockDTO;
 import com.mandacarubroker.messages.StockMessages;
@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 
-public class StockTests {
+public class StockControllerTest {
     @BeforeClass
     public static void SetUp(){
         baseURI = "http://localhost:8080";

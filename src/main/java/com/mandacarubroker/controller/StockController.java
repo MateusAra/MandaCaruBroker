@@ -11,6 +11,7 @@ import com.mandacarubroker.responses.GetStockByIdResponse;
 import com.mandacarubroker.responses.UpdateStockResponse;
 import com.mandacarubroker.service.*;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RequestMapping("/stocks")
 public class StockController {
 
+    @Autowired
     private final StockService stockService;
     public StockController(StockService stockService) {
         this.stockService = stockService;
