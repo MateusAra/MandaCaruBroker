@@ -1,0 +1,7 @@
+ src/main/java/com/mandacarubroker/controller/StockController.java   | 4 [32m++[m[31m--[m
+ .../com/mandacarubroker/{domain/stock => dto}/RequestStockDTO.java  | 2 [32m+[m[31m-[m
+ .../java/com/mandacarubroker/{domain/stock => model}/Stock.java     | 3 [32m++[m[31m-[m
+ .../{domain/stock => repository}/StockRepository.java               | 3 [32m++[m[31m-[m
+ src/main/java/com/mandacarubroker/service/StockService.java         | 6 [32m+++[m[31m---[m
+ src/main/resources/application.properties                           | 4 [32m++[m[31m--[m
+ 6 files changed, 12 insertions(+), 10 deletions(-)

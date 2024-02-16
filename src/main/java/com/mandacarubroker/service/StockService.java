@@ -1,24 +1,20 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
-import com.mandacarubroker.domain.stock.Stock;
-import com.mandacarubroker.domain.stock.StockRepository;
-import jakarta.validation.*;
+import com.mandacarubroker.dto.StockDTO;
+import com.mandacarubroker.model.Stock;
+import com.mandacarubroker.repository.IStockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class StockService {
 
-
-    private final StockRepository stockRepository;
-
-    public StockService(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
-    }
+    @Autowired
+    private IStockRepository stockRepository;
 
     public List<Stock> getAllStocks() {
         return stockRepository.findAll();
@@ -28,50 +24,29 @@ public class StockService {
         return stockRepository.findById(id);
     }
 
-    public Stock createStock(RequestStockDTO data) {
-        Stock novaAcao = new Stock(data);
-        validateRequestStockDTO(data);
-        return stockRepository.save(novaAcao);
+    public Stock updateStock(Stock stock, StockDTO updatedStock) {
+        stock.setSymbol(updatedStock.symbol());
+        stock.setCompanyName(updatedStock.companyName());
+        stock.setPrice(updatedStock.price());
+
+        stockRepository.save(stock);
+
+        return stock;
     }
 
-    public Optional<Stock> updateStock(String id, Stock updatedStock) {
-        return stockRepository.findById(id)
-                .map(stock -> {
-                    stock.setSymbol(updatedStock.getSymbol());
-                    stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
-                    stock.setPrice(newPrice);
+    public boolean deleteStock(String id) {
+        Stock stock =  getStockById(id).orElse(null);
 
-                    return stockRepository.save(stock);
-                });
-    }
+        if (stock == null)
+            return false;
 
-    public void deleteStock(String id) {
         stockRepository.deleteById(id);
+        return true;
     }
 
-    public static void validateRequestStockDTO(RequestStockDTO data) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(data);
+    public Stock createStock(StockDTO data) {
+        Stock newStock = new Stock(data);
 
-        if (!violations.isEmpty()) {
-            StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
-
-            for (ConstraintViolation<RequestStockDTO> violation : violations) {
-                errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
-            }
-
-            errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
-
-            throw new ConstraintViolationException(errorMessage.toString(), violations);
-        }
-    }
-
-    public void validateAndCreateStock(RequestStockDTO data) {
-        validateRequestStockDTO(data);
-
-        Stock novaAcao = new Stock(data);
-        stockRepository.save(novaAcao);
+        return stockRepository.save(newStock);
     }
 }
